@@ -133,10 +133,8 @@ client.on('message', message =>{
 
 function image(message){
 
-  var search = args.slice(1).join(" ");
-
    var options = {
-     url: "http://results.dogpile.com/serp?qc=images&q=" + search,
+     url: "http://results.dogpile.com/serp?qc=images&q=" + 'kermit',
      method: 'GET',
      headers: {
        'Accept': 'text/html',
@@ -156,9 +154,7 @@ function image(message){
     var links = $(".image a.link");
 
     var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
-   
-    console.log(urls);
-
+    
     if (!urls.length) {
          
         return;
