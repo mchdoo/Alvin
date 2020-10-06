@@ -5,11 +5,15 @@ const client = new Discord.Client();
 
 const prefix = '.';
 
-var version = '2.0.5'
+var servers = {};
+
+var version = '2.4.1';
 
 const cheerio = require('cheerio');
 
 const request = require('request');
+
+const ytdl = require('ytdl-core')
 
 const fs = require('fs');
 const { Server } = require('http');
@@ -128,23 +132,29 @@ client.on('message', message =>{
       .setColor('YELLOW')
       message.channel.send(embed);
     break;
+    case 'p':
+      if(!args[0]){
+        message.channel.send('Para poder poner la cancion, necesito que me des un link.');
+        return;
+      }
+    break;
   }
 });
 
-function image(message){
+function image(message) {
 
-   var options = {
-     url: "http://results.dogpile.com/serp?qc=images&q=" + 'kermit',
-     method: 'GET',
-     headers: {
-       'Accept': 'text/html',
-       'User-Agent': 'Chrome'
-     }
-   };
+  var options = {
+    url: "http://results.dogpile.com/serp?qc=images&q=" + 'kermit',
+    method: 'GET',
+    headers: {
+      'Accept': 'text/html',
+      'User-Agent': 'Chrome'
+    }
+  };
 
-   request(options, function(error, response, responseBody) {
+  request(options, function (error, response, responseBody) {
     if (error) {
-        return;
+      return;
     }
 
 
@@ -154,10 +164,10 @@ function image(message){
     var links = $(".image a.link");
 
     var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
-    
+
     if (!urls.length) {
-         
-        return;
+
+      return;
     }
 
     // Send result
