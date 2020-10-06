@@ -148,7 +148,7 @@ function image(message){
     console.log(urls);
 
     if (!urls.length) {
-       
+         
         return;
     }
 
