@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+require('dotenv').config();
 
 const client = new Discord.Client();
 
@@ -31,7 +32,7 @@ client.on('ready', () => {
 
 
 client.on('guildMemberAdd', function(member){
-  member.guild.channels.cache.get('761655292810231860').send(`Bienvenid@ al server, **${member}**!!` ); 
+  member.guild.channels.cache.get('761655292810231860').send(`Bienvenid@ al server, **${member}**!!\n Para saber cuales son mis comandos usa '.comandos'.` ); 
 });
 
 client.on('guildMemberRemove', function(member){
@@ -62,11 +63,11 @@ client.on('message', message =>{
   switch(args[0]){
     case 'info':
       if(args[1] === 'version'){
-        message.channel.send('Mi versión actual es: ' + version + '. Pero todavía estoy en dessarollo :blush:');
+        message.channel.send('Mi versión actual es: ***' + version + '***... Pero todavía estoy en dessarollo :blush:');
       } else if (args[1] === 'autor') {
           message.channel.send('Mi autor es Pedro Machado.')
       } else {
-        message.reply('El comando "info" solo funciona con "version" o "autor" al lado.')
+        message.reply('El comando "info" solo funciona con **"version"** o **"autor"** al lado.')
       }
     break;
     case 'comandos':
@@ -90,7 +91,7 @@ client.on('message', message =>{
 
       let msgArgs = args.slice(1).join(' ');
 
-      message.channel.send(message.author.username + ' pregunta:\n \n 📄 **' + msgArgs + '**').then(messageReaction => {
+      message.channel.send('**' + message.author.username + '** pregunta:\n 📄 ***' + msgArgs + '***').then(messageReaction => {
         messageReaction.react('👍');
         messageReaction.react('👎');
         message.delete({timeout: 3000}).catch(console.error);
@@ -205,4 +206,6 @@ client.on('message', msg => {
     }
   });
 
-client.login(process.env.token);
+//client.login(process.env.TOKEN);
+//client.login('NzYxNjUyNzM1MjI1MjMzNDU4.X3duYg._9YqfzHMFRF062HZX-a548Ptdbw');
+client.login();
