@@ -132,8 +132,11 @@ client.on('message', message =>{
 });
 
 function image(message){
+
+  var search = args.slice(1).join(" ");
+
    var options = {
-     url: "http://results.dogpile.com/serp?qc=images&q=" + 'kermit',
+     url: "http://results.dogpile.com/serp?qc=images&q=" + search,
      method: 'GET',
      headers: {
        'Accept': 'text/html',
