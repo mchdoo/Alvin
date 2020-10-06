@@ -1,0 +1,17 @@
+{
+  "name": "alvin",
+  "version": "1.0.0",
+  "description": "Un bot universal, interactivo y muy educado.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pedro Machado",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "discord-welcome": "^2.0.2",
+    "discord.js": "^12.3.1",
+    "request": "^2.88.2"
+  }
+}
