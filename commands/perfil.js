@@ -8,7 +8,7 @@ module.exports= {
     execute(message, args){
         const embed = new Discord.MessageEmbed()
         .setTitle('Informacion Jugador')
-        .addField('Nombre del jugador', `${message.author}`)
+        .addField('Nombre del jugador', `${message.author.username}`)
         .addField('Discord Tag', `${message.author.discriminator}`)
         .setThumbnail(message.author.avatarURL())
         .setColor(0x57b6ff)
