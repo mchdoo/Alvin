@@ -120,6 +120,14 @@ client.on('message', message =>{
     case 'imagen':
     image(message);
     break;
+    case 'avances':
+      embed
+      .setTitle('Avances Alvin')
+      .addField('En proceso', 'Actualmente trabajando en la funcionalidad "Musica", que va a servir para reproducir musica mientras se juega.')
+      .setFooter('Usá ".comandos" para ver todos mis comandos disponibles!', client.user.avatarURL())
+      .setColor('YELLOW')
+      message.channel.send(embed);
+    break;
   }
 });
 
