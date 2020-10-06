@@ -163,7 +163,6 @@ client.on('message', msg =>{
     if (msg.author == client.user){return}
     let message = msg.content.toLowerCase()
     if(message.includes('te odio alvin')){
-        msg.channel.send(`:(`);
         msg.react('😥');
     }
 });
