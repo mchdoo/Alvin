@@ -16,6 +16,7 @@ const request = require('request');
 const ytdl = require('ytdl-core')
 
 const fs = require('fs');
+
 const { Server } = require('http');
 
 client.commands = new Discord.Collection();
@@ -28,7 +29,7 @@ for(const file of commandFiles){
 }
 
 client.on('ready', () => {
-    console.log('Estoy conectado!');
+    console.log(client.user.username + ' se conectó');
     client.user.setActivity('Among Us');
 });
 
@@ -78,7 +79,7 @@ client.on('message', message =>{
       //let embed = new Discord.MessageEmbed()
       embed
         .setTitle('Comandos de Alvin')
-        .addField('Comandos con prefijo:','\n   -***info:*** te digo mi version o mi autor. \n   -***help:*** ayuda y contacto. \n   -***comandos:*** este es el comando que acabas de usar, te dice todos mis comandos disponibles. \n   -***perfil:*** te mando un *embed* con información sobre tu perfil (foto de perfil, nombre de usuario, etc.).\n   -***poll:*** hago una encuesta con lo que escribas al lado.\n   ***imagen:*** te mando una imagen random de kermit.\n   ***kick:*** elimino a un miembro que etiquetes a la derecha.')
+        .addField('Comandos con prefijo:', fs.readFileSync('./texts/comandosconprefijo.txt'))
         .addField('Comandos interactivos o sin prefijos:', 'Estos son los comandos que no requieren un prefijo (".") al principio. \n En realidad no tienen ningun proposito, pero hacen que sea mas divertido. Estos comandos son: ***hola***, ***chau***, ***te amo***, ***te odio*** y ***como estas.***')
         .setFooter('Acordate de que antes de poner cualquier comando tenes que poner un punto. \n ej: ".help".', client.user.avatarURL())
         .setColor(0x57b6ff)
@@ -90,7 +91,7 @@ client.on('message', message =>{
       embed
       .setColor('RED')
       .setTitle('ARGUMENTO INVALIDO')
-      .addField('Iniciar encuesta:', 'Para iniciar una encuesta tenés que escribir algo como "Blanco o negro", por ejemplo.\n (obviamente con el prefijo ".poll" al principio).')
+      .addField('Iniciar encuesta:', 'Para iniciar una encuesta tenés que escribir una encuesta de dos opciones.\n (obviamente con el prefijo ".poll" al principio).')
       if(!args[1]) message.channel.send(embed);
 
       let msgArgs = args.slice(1).join(' ');
@@ -122,7 +123,7 @@ client.on('message', message =>{
       }
     break;
     case 'imagen':
-    image(message);
+    image(message, args);
     break;
     case 'avances':
       embed
@@ -133,18 +134,70 @@ client.on('message', message =>{
       message.channel.send(embed);
     break;
     case 'p':
+
+      function play(connection, message){
+        
+        var server = servers[message.guild.id];
+        
+        server.dispatcher = connection.play(ytdl(server.queue[0], {filter:"audioonly"}));
+
+        server.queue.shift();
+        
+        server.dispatcher.on("end", function(){
+          if(server.queue[0]){
+            play(connection, message);
+          }else{
+            connection.disconnect();
+          }
+        });
+      }
+
       if(!args[0]){
-        message.channel.send('Para poder poner la cancion, necesito que me des un link.');
+        message.reply('para poder poner la cancion, necesito que me des un link.');
         return;
       }
+      if(!message.member.voice.channel){
+        message.reply('para que pueda poner musica necesito que estes en un canal de voz');
+        return;
+      }
+      if(!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+
+      }
+
+      var server = servers[message.guild.id];
+
+      server.queue.push(args[1]);
+
+      if(!message.guild.voiceConnection) message.member.voice.channel.join().then(function(connection){
+        play(connection, message);
+      })
     break;
+    case 'stop':
+      var server = servers[message.guild.id];
+        if(server.dispatcher) server.dispatcher.end();
+    break;
+    case 'stop':
+      if(message.guild.voiceConnection){
+        for(var i = server.queue.length -1; 1 >= 0; i--){
+          server.queue.splice(i, 1);
+        }
+
+        server.dispatcher.end();
+        console.log('stopped the queue')
+      }
+      if(message.guild.connection) message.guild.voiceConnection.disconnect();
+    break;
+      
   }
 });
 
-function image(message) {
+function image(message, args) {
+
+  var search = args.slice(1).join(" ");
 
   var options = {
-    url: "http://results.dogpile.com/serp?qc=images&q=" + 'kermit',
+    url: "http://results.dogpile.com/serp?qc=images&q=" + search,
     method: 'GET',
     headers: {
       'Accept': 'text/html',

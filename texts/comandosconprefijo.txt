@@ -1,0 +1,9 @@
+________________________________________________________    
+    •***info:*** te digo mi *version* o mi *autor*.
+    •***help:*** ayuda y contacto del autor. 
+    •***comandos:*** este es el comando que acabas de usar, te dice todos mis comandos disponibles. 
+    •***perfil:*** te mando un *embed* con información sobre tu perfil (foto de perfil, nombre de usuario, etc.).
+    •***poll:*** hago una encuesta con lo que escribas al lado. Ej: '.poll Crema americana o menta granizada?'
+    •***imagen:*** te mando una imagen. Ej: '.imagen gatos'.
+    •***kick:*** elimino a un miembro que etiquetes a la derecha.
+    •***play:*** **EN DESRROLLO**. Es necesario estar en un chat de voz, y, si pones un link de alguna cancion al lado, me uno al chat de voz en el que estas y pongo la canción.
