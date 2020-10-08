@@ -7,3 +7,5 @@ ________________________________________________________
     •***imagen:*** te mando una imagen. Ej: '.imagen gatos'.
     •***kick:*** elimino a un miembro que etiquetes a la derecha.
     •***play:*** **EN DESRROLLO**. Es necesario estar en un chat de voz, y, si pones un link de alguna cancion al lado, me uno al chat de voz en el que estas y pongo la canción.
+        ***stop:*** parte de 'play'. Detiene la cancion y salgo del chat de voz.
+________________________________________________________  

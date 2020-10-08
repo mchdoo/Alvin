@@ -28,6 +28,12 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
+const { Player } = require("discord-player");
+
+const player = new Player(client);
+
+client.player = player;
+
 client.on('ready', () => {
     console.log(client.user.username + ' se conectó');
     client.user.setActivity('Among Us');
@@ -63,7 +69,6 @@ client.on('message', message =>{
  
   let args = message.content.substring(prefix.length).split(" ");
   let embed = new Discord.MessageEmbed();
-  //let messageReaction = new Discord.MessageReaction();
 
   switch(args[0]){
     case 'info':
@@ -76,7 +81,6 @@ client.on('message', message =>{
       }
     break;
     case 'comandos':
-      //let embed = new Discord.MessageEmbed()
       embed
         .setTitle('Comandos de Alvin')
         .addField('Comandos con prefijo:', fs.readFileSync('./texts/comandosconprefijo.txt'))
@@ -87,7 +91,6 @@ client.on('message', message =>{
         message.channel.send(embed);
     break;
     case 'poll':
-      //let embed = new Discord.MessageEmbed()
       embed
       .setColor('RED')
       .setTitle('ARGUMENTO INVALIDO')
@@ -133,62 +136,6 @@ client.on('message', message =>{
       .setColor('YELLOW')
       message.channel.send(embed);
     break;
-    case 'p':
-
-      function play(connection, message){
-        
-        var server = servers[message.guild.id];
-        
-        server.dispatcher = connection.play(ytdl(server.queue[0], {filter:"audioonly"}));
-
-        server.queue.shift();
-        
-        server.dispatcher.on("end", function(){
-          if(server.queue[0]){
-            play(connection, message);
-          }else{
-            connection.disconnect();
-          }
-        });
-      }
-
-      if(!args[0]){
-        message.reply('para poder poner la cancion, necesito que me des un link.');
-        return;
-      }
-      if(!message.member.voice.channel){
-        message.reply('para que pueda poner musica necesito que estes en un canal de voz');
-        return;
-      }
-      if(!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-
-      }
-
-      var server = servers[message.guild.id];
-
-      server.queue.push(args[1]);
-
-      if(!message.guild.voiceConnection) message.member.voice.channel.join().then(function(connection){
-        play(connection, message);
-      })
-    break;
-    case 'stop':
-      var server = servers[message.guild.id];
-        if(server.dispatcher) server.dispatcher.end();
-    break;
-    case 'stop':
-      if(message.guild.voiceConnection){
-        for(var i = server.queue.length -1; 1 >= 0; i--){
-          server.queue.splice(i, 1);
-        }
-
-        server.dispatcher.end();
-        console.log('stopped the queue')
-      }
-      if(message.guild.connection) message.guild.voiceConnection.disconnect();
-    break;
-      
   }
 });
 
@@ -276,6 +223,21 @@ client.on('message', msg => {
     }
   });
 
-//client.login(process.env.TOKEN);
-//client.login('NzYxNjUyNzM1MjI1MjMzNDU4.X3duYg._9YqfzHMFRF062HZX-a548Ptdbw');
+  client.on('message', async message => {
+
+    let args = message.content.slice(prefix.length).trim().split(" ");
+    let command = args.shift().toLowerCase();
+
+    if(command === 'play') {
+
+      let track =  await client.player.play(message.member.voice.channel, args[0], message.member.user.tag);
+      message.channel.send(`Reproduciendo ${track.name}, sugerida por ${message.author}`);
+    }
+    
+    if(command === 'stop'){
+      let track = await client.player.stop(message.guild.id);
+      message.channel.send('Canción detenida.')
+    }
+  });
+
 client.login();
