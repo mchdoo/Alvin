@@ -7,7 +7,7 @@ const prefix = '.';
 
 var servers = {};
 
-var version = '2.4.1';
+var version = '2.5.7';
 
 const cheerio = require('cheerio');
 
@@ -86,7 +86,7 @@ client.on('message', message =>{
         .addField('Comandos con prefijo:', fs.readFileSync('./texts/comandosconprefijo.txt'))
         .addField('Comandos interactivos o sin prefijos:', 'Estos son los comandos que no requieren un prefijo (".") al principio. \n En realidad no tienen ningun proposito, pero hacen que sea mas divertido. Estos comandos son: ***hola***, ***chau***, ***te amo***, ***te odio*** y ***como estas.***')
         .setFooter('Acordate de que antes de poner cualquier comando tenes que poner un punto. \n ej: ".help".', client.user.avatarURL())
-        .setColor(0x57b6ff)
+        .setColor('YELLOW')
         .setThumbnail(client.user.avatarURL())
         message.channel.send(embed);
     break;
@@ -133,7 +133,7 @@ client.on('message', message =>{
       .setTitle('Avances Alvin')
       .addField('En proceso', 'Actualmente trabajando en la funcionalidad "Musica", que va a servir para reproducir musica mientras se juega.')
       .setFooter('Usá ".comandos" para ver todos mis comandos disponibles!', client.user.avatarURL())
-      .setColor('YELLOW')
+      .setColor('ORANGE')
       message.channel.send(embed);
     break;
   }
@@ -189,8 +189,16 @@ client.on('message', msg =>{
     if (msg.author == client.user){return}
     let message = msg.content.toLowerCase()
     if(message.includes('te amo alvin')){
-        msg.channel.send(':kiss:');
+        msg.react('💋');
     }
+});
+
+client.on('message', msg =>{
+  if (msg.author == client.user){return}
+  let message = msg.content.toLowerCase()
+  if(message.includes('alvin te amo')){
+      msg.react('💋');
+  }
 });
 
 client.on('message', msg => {
@@ -203,7 +211,7 @@ client.on('message', msg => {
     }
   });
 
-  client.on('message', msg => {
+client.on('message', msg => {
     var Mensajes = [`Hola!`, "Buenos dias/tardes/noches!", "Hola, que gusto verte!"];
     var aleatorio = Math.floor(Math.random()*(Mensajes.length));
     if (msg.author == client.user){return}
@@ -213,17 +221,27 @@ client.on('message', msg => {
     }
   });
 
-  client.on('message', msg => {
+client.on('message', msg => {
     var Mensajes = [`Todo perfecto!`, "Bien :)", "Hoy fue un día duro en el trabajo... pero todo bien!", "Todo bien, todo correcto..."];
     var aleatorio = Math.floor(Math.random()*(Mensajes.length));
     if (msg.author == client.user){return}
     let message = msg.content.toLowerCase()
-    if (message.includes("como estas") ) {
+    if (message.includes("como estas")){
       msg.channel.send(Mensajes[aleatorio]);
     }
   });
 
-  client.on('message', async message => {
+client.on('message', msg => {
+    var Mensajes = [`Todo perfecto!`, "Bien :)", "Hoy fue un día duro en el trabajo... pero todo bien!", "Todo bien, todo correcto..."];
+    var aleatorio = Math.floor(Math.random()*(Mensajes.length));
+    if (msg.author == client.user){return}
+    let message = msg.content.toLowerCase()
+    if (message.includes("como andas")){
+      msg.channel.send(Mensajes[aleatorio]);
+    }
+  });
+
+client.on('message', async message => {
 
     let args = message.content.slice(prefix.length).trim().split(" ");
     let command = args.shift().toLowerCase();

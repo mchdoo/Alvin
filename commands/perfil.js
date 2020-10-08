@@ -11,7 +11,7 @@ module.exports= {
         .addField('Nombre del jugador', `${message.author.username}`)
         .addField('Discord Tag', `${message.author.discriminator}`)
         .setThumbnail(message.author.avatarURL())
-        .setColor(0x57b6ff)
+        .setColor('YELLOW')
         message.channel.send(embed);
     }
 }
